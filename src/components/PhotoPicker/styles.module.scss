@@ -1,0 +1,61 @@
+.inputFile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex: 1;
+
+  input[type='file'] {
+    display: none;
+  }
+
+  .scannerPreview {
+    width: 100%;
+    flex: 1;
+  }
+
+  .picker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .btnFile {
+      height: 80px;
+      width: 80px;
+      padding: 1px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: none;
+      overflow: hidden;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        transition: background-color 0.3s;
+      }
+    }
+
+    &:active {
+      .btnFile::before {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
