@@ -1,13 +1,24 @@
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
-import Scanner from './components/scanner'
+import Scanner from "./components/scanner";
 
 function App() {
+  const [camera, setCamera] = useState<boolean>(false);
   return (
-    <div className="App">
-      <Scanner enableCamera width="100%" height="100vh" onCode={console.log}/>
-    </div>
-  )
+    <>
+      <label id="camera">
+        <input
+          type="checkbox"
+          name="camera"
+          checked={camera}
+          onChange={() => setCamera(!camera)}
+        />
+        {camera ? "Camera ON" : "Camera OFF"}
+      </label>
+      <Scanner enableCamera={camera} width="100%" height="100vh" />
+    </>
+  );
 }
 
-export default App
+export default App;
