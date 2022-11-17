@@ -1,8 +1,12 @@
-export const fileToDataURL = (file: File) =>
-  new Promise<string>((resolve, reject) => {
+export const fileToImage = (file: File) =>
+  new Promise<HTMLImageElement>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (event) => {
-      resolve(event.target?.result as string);
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        resolve(img);
+      };
     };
     reader.onerror = (error) => {
       reject(error);
