@@ -18,7 +18,7 @@ class NativeBarcodeScanner implements IBarcodeScanner {
   }
 
   static isSupported(): boolean {
-    return 'BarcodeDetector' in window;
+    return "BarcodeDetector" in window;
   }
 
   async scanBarcode(imageData: ImageData): Promise<IBarcodeResult | null> {
@@ -53,10 +53,10 @@ class NativeBarcodeScanner implements IBarcodeScanner {
 
     return null;
   }
-
+  
   async scanFile(file: File): Promise<IBarcodeResult | null> {
-    const barcodes = await this.scanner.detect(file);
-
+    const barcodes = await this.scanner.detect(await createImageBitmap(file));
+    
     if (barcodes.length > 0) {
       const result: IBarcodeResult = {
         format: barcodes[0].format,
