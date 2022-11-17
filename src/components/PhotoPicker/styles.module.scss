@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 100%;
   flex: 1;
 
   input[type='file'] {
@@ -11,8 +12,7 @@
   }
 
   .scannerPreview {
-    width: 100%;
-    flex: 1;
+    height: 100%;
   }
 
   .picker {
