@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import classNames from "classnames";
 import { CSSTransition } from "react-transition-group";
-import { Icon } from "@iconify/react";
 
 import useScanner from "../../hooks/useScanner";
 import PhotoPicker from "../PhotoPicker";
@@ -45,6 +44,7 @@ const Scanner: React.FC<IProps> = ({
     isSupported,
     disable,
     enable,
+    error,
   } = useScanner("reader");
   const [detected, setDetected] = useState<boolean>(false);
   const [currentCode, setCurrentCode] = useState<string | null>(null);
@@ -53,7 +53,6 @@ const Scanner: React.FC<IProps> = ({
   const [isReady, _, wait] = useTimeout(3 * 1000, false);
 
   const highlight = useRef<HTMLDivElement>(null);
-  const detectedStatus = useRef<HTMLDivElement>(null);
   const DURATION = 300;
 
   useEffect(() => {
@@ -98,6 +97,10 @@ const Scanner: React.FC<IProps> = ({
   );
 
   useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
+  useEffect(() => {
     if (code) {
       clearTimeout(timeout);
       setDetected(true);
@@ -119,13 +122,22 @@ const Scanner: React.FC<IProps> = ({
     [cameraAvailable, currentFile]
   );
 
-  const content = useMemo(() => {
-    if (!cameraAvailable || !enableCamera) {
-      return <PhotoPicker onChange={onChangePhoto} file={file} />;
-    }
-
-    return (
-      <div id={"reader"} className={styles.scanner} style={{ width, height }}>
+  return (
+    <>
+      <PhotoPicker
+        className={classNames({
+          [styles.hide]: cameraAvailable && enableCamera,
+        })}
+        onChange={onChangePhoto}
+        file={file}
+      />
+      <div
+        id={"reader"}
+        className={classNames(styles.scanner, {
+          [styles.hide]: !cameraAvailable || !enableCamera,
+        })}
+        style={{ width, height }}
+      >
         {/* <span
           ref={detectedStatus}
           className={classNames(styles.detectionStatus, {
@@ -137,12 +149,6 @@ const Scanner: React.FC<IProps> = ({
         </span> */}
         <img id={"preview"} className={styles.preview} />
       </div>
-    );
-  }, [cameraAvailable, width, height, code, detected, onChangePhoto, file]);
-
-  return (
-    <>
-      {content}
       {displayCode && (
         <p className={styles.code}>
           Code : <b>{currentCode || "Aucun code"}</b>
