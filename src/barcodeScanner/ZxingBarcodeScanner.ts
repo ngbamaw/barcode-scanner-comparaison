@@ -4,9 +4,6 @@ import ZXingModule, {
 } from "./zxing";
 import IBarcodeScanner from "./IBarcodeScanner";
 
-export type SuccessHandler = (result: BarcodeResultType) => void;
-export type ErrorHandler = (error: Error) => void;
-
 class ZxingBarcodeScanner implements IBarcodeScanner {
   private zxing: IZXing;
 
@@ -47,6 +44,7 @@ class ZxingBarcodeScanner implements IBarcodeScanner {
         if (evt.target === null) {
           return;
         }
+
         const fileData = new Uint8Array(evt.target.result as ArrayBufferLike);
         const buffer = this.zxing._malloc(fileData.length);
         this.zxing.HEAPU8.set(fileData, buffer);

@@ -3,9 +3,6 @@ import { IBarcodeResult } from "./zxing";
 
 declare const BarcodeDetector: any;
 
-export type SuccessHandler = (result: IBarcodeResult) => void;
-export type ErrorHandler = (error: Error) => void;
-
 class NativeBarcodeScanner implements IBarcodeScanner {
   private scanner: any;
 
@@ -24,7 +21,6 @@ class NativeBarcodeScanner implements IBarcodeScanner {
   async scanBarcode(imageData: ImageData): Promise<IBarcodeResult | null> {
     const barcodes = await this.scanner.detect(imageData);
     if (barcodes.length > 0) {
-      console.log(`Scanned with native scanner: ${barcodes[0].cornerPoints}`);
       const result: IBarcodeResult = {
         format: barcodes[0].format,
         text: barcodes[0].rawValue,
@@ -48,12 +44,13 @@ class NativeBarcodeScanner implements IBarcodeScanner {
           },
         },
       };
+      
       return result;
     }
 
     return null;
   }
-  
+
   async scanFile(file: File): Promise<IBarcodeResult | null> {
     const barcodes = await this.scanner.detect(await createImageBitmap(file));
     

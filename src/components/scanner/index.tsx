@@ -37,7 +37,6 @@ const Scanner: React.FC<IProps> = ({
     start,
     stop,
     scanFile,
-    reset,
     changeScanner,
     scannerType,
     cameraAvailable,

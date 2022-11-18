@@ -4,7 +4,7 @@ import NativeBarcodeScanner from "../barcodeScanner/NativeBarcodeScanner";
 import { IBarcodeResult } from "../barcodeScanner/zxing";
 import ZxingBarcodeScanner from "./ZxingBarcodeScanner";
 
-export type SuccessHandler = (result: IBarcodeResult) => void;
+export type SuccessHandler = (result: IBarcodeResult | null) => void;
 export type ErrorHandler = (error: Error) => void;
 
 export enum SCANNER_TYPE {
@@ -147,6 +147,10 @@ class BarcodeScanner {
 
       const width = container.clientWidth;
 
+      if (width === 0) {
+        return;
+      }
+
       const imageData = this.getImageDataFromCanvas(
         canvasElement,
         0,
@@ -158,9 +162,7 @@ class BarcodeScanner {
       this.scanner
         .scanBarcode(imageData)
         .then((result) => {
-          if (result) {
             this.successHandler(result);
-          }
         })
         .catch((error) => {
           this.errorHandler(error);

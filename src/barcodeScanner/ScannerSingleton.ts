@@ -1,8 +1,4 @@
-import {
-  ErrorHandler,
-  SuccessHandler,
-} from "./ZxingBarcodeScanner";
-import BarcodeScanner from "./BarcodeScanner";
+import BarcodeScanner, { ErrorHandler, SuccessHandler } from "./BarcodeScanner";
 
 class ScannerSingleton {
   private static instance: BarcodeScanner | null;
