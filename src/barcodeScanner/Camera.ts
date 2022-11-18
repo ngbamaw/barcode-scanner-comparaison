@@ -68,6 +68,7 @@ class Camera {
       const width = container.clientWidth;
       const ratioVideo = video.videoWidth / video.videoHeight;
       canvasElement.width = container.clientHeight * ratioVideo;
+
       canvas.drawImage(
         video,
         width / 2 - canvasElement.width / 2,
@@ -75,16 +76,20 @@ class Camera {
         canvasElement.width,
         canvasElement.height
       );
-      if (this.frameNumber === this.fps) {
+
+      if (this.frameNumber >= this.fps) {
         onCallback(canvasElement, container);
         this.frameNumber = 0;
       }
     }
 
     this.frameNumber += 1;
-    requestAnimationFrame(() => {
-      this.tick(onCallback);
-    });
+    
+    if (this.cameraStarted) {
+      requestAnimationFrame(() => {
+        this.tick(onCallback);
+      });
+    }
   }
 
   async getStream(
@@ -132,6 +137,7 @@ class Camera {
     }
     this.fps = fps;
     this.cameraStarted = true;
+    this.frameNumber = 0;
     this.container.classList.add("zxing-camera-container");
     this.container.style.overflow = "hidden";
     this.container.append(this.canvasElement);
